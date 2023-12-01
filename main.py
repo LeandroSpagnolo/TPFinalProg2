@@ -1,5 +1,4 @@
-import sys      
-import string
+import sys
 import random
 
 def procesarPalabrasEntrada(archivoEntradas):
