@@ -51,11 +51,11 @@ def completarArchivoSalida(diccionario, archivoFrases, archivoSalida):
             palabraActual = listaPalabras[posicion]
             if '_' in palabraActual:
                 if posicion > 0 and listaPalabras[posicion - 1] in diccionario:
-                    palabra_anterior = listaPalabras[posicion - 1]
-                    listaPalabras[posicion] = adivinarPalabra(diccionario[palabra_anterior]["siguiente"])
+                    palabraAnterior = listaPalabras[posicion - 1]
+                    listaPalabras[posicion] = adivinarPalabra(diccionario[palabraAnterior]["siguiente"])
                 elif posicion + 1 < largo and listaPalabras[posicion + 1] in diccionario:
-                    palabra_siguiente = listaPalabras[posicion   + 1]
-                    listaPalabras[posicion] = adivinarPalabra(diccionario[palabra_siguiente]["anterior"])
+                    palabraSiguiente = listaPalabras[posicion   + 1]
+                    listaPalabras[posicion] = adivinarPalabra(diccionario[palabraSiguiente]["anterior"])
                 else:
                     palabraAleatoria = random.choice(list(diccionario.keys()))
                     listaPalabras[posicion] = palabraAleatoria
