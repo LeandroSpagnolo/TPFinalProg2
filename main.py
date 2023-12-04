@@ -65,7 +65,7 @@ def filtrarLista(listaPalabras,largo,diccionario):
 
                 elif posicion + 1 < largo and listaPalabras[posicion + 1] in diccionario:
 
-                    palabraSiguiente = listaPalabras[posicion   + 1]
+                    palabraSiguiente = listaPalabras[posicion + 1]
                     listaPalabras[posicion] = adivinarPalabra(diccionario[palabraSiguiente]["anterior"])
                     
                 else:
