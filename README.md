@@ -36,4 +36,8 @@ Si ni la palabra anterior ni la siguiente se encuentran en los textos del artist
 
 Opté por utilizar un diccionario como base de datos para todas las palabras junto con sus siguientes y anteriores. Por ejemplo, la palabra "te" tendría varias palabras siguientes, como "vi" o "trate", junto con un contador que se incrementa cada vez que esa palabra sigue a "te".
 
+`'te': {'anterior': {'que': 1, 'simplemente': 2, 'vi': 2, 'y': 1},
+        'siguiente': {'trate': 1, 'vi': 8}}`
+
+
 La parte que más me complicó fue que, en el texto correspondiente al archivo en "frases", a veces no detectaba las "_" ya que podían estar seguidas de un punto o coma. Esto se debía a que al usar split(), por ejemplo, _. o _, se interpretaba como una palabra única y no se separaba en la lista.
