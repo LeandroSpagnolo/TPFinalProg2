@@ -7,21 +7,21 @@ int existeCarpetaArtista(char *nombreArtista){
 
     system("cd Textos/ && ls > ../nombresArtistas.txt");
 
-    FILE *archivo = fopen("./nombresArtistas.txt","r");
+    FILE *archivoNombreArtistas = fopen("./nombresArtistas.txt","r");
 
     char linea[100];
 
-    int encontro = 0;
+    int encontroArtista = 0;
 
-    while (fscanf(archivo, "%s", linea) == 1&& encontro == 0) {
+    while (fscanf(archivoNombreArtistas, "%s", linea) == 1&& encontroArtista == 0) {
         if(strcmp(linea,nombreArtista) == 0){
-            encontro = 1;
+            encontroArtista = 1;
         }
     }
 
-    fclose(archivo);
+    fclose(archivoNombreArtistas);
 
-    return encontro;
+    return encontroArtista;
 
 }
 
@@ -35,7 +35,7 @@ void encontrarNombreTextos(char *nombreArtista){
 
 }
 
-void procesarTextos(char *nombreTexto,char *nombreArtista, FILE *archivosalida){
+void procesarTextosDelArtista(char *nombreTexto,char *nombreArtista, FILE *archivosalida){
 
     char ubicacionTextos[100] = "./Textos/";
     strcat(ubicacionTextos,nombreArtista);
@@ -75,27 +75,26 @@ void procesarArchivos(char *nombreArtista){
 
     FILE *archivoNombresTextos = fopen("./nombresTextos.txt","r");
 
-    char ubicacionEntradas[100] = "./Entradas/";
-    strcat(ubicacionEntradas,nombreArtista);
-    strcat(ubicacionEntradas,".txt");
+    char ubicacionEntradasArtista[100] = "./Entradas/";
+    strcat(ubicacionEntradasArtista,nombreArtista);
+    strcat(ubicacionEntradasArtista,".txt");
     
-    FILE *archivoEntradas = fopen(ubicacionEntradas,"w");
+    FILE *archivoEntradasArtista = fopen(ubicacionEntradasArtista,"w");
 
     char linea[100];
-
     
 
     while (fscanf(archivoNombresTextos, "%s", linea) == 1) {
-       procesarTextos(linea,nombreArtista,archivoEntradas);
+       procesarTextosDelArtista(linea,nombreArtista,archivoEntradasArtista);
     }
 
     fclose(archivoNombresTextos);
-    fclose(archivoEntradas);
+    fclose(archivoEntradasArtista);
 
 }
 
 int main(int argc, char *argv[]) {
-    
+
     if (argc < 2) {
         printf("No se ha ingresado ningun argumento\n");
         return 1;  
@@ -103,7 +102,7 @@ int main(int argc, char *argv[]) {
 
     if(existeCarpetaArtista(argv[1]) == 0){
         printf("No se encontro al artista en la carpeta\n");
-        return 1;
+        return 2;
     }
     
     encontrarNombreTextos(argv[1]);
