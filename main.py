@@ -52,18 +52,11 @@ def adivinarPalabra(diccionarioPalabra):
 
 
 
-def completarArchivoSalida(diccionario, archivoFrases, archivoSalida):
+def filtrarLista(listaPalabras,largo,diccionario):
 
-    for linea in archivoFrases.readlines():
+    for posicion in range(largo):
 
-        listaPalabras = linea.split()
-        largo = len(listaPalabras)
-
-        for posicion in range(largo):
-
-            palabraActual = listaPalabras[posicion]
-
-            if '_' in palabraActual:
+            if '_' in listaPalabras[posicion]:
 
                 if posicion > 0 and listaPalabras[posicion - 1] in diccionario:
 
@@ -78,6 +71,17 @@ def completarArchivoSalida(diccionario, archivoFrases, archivoSalida):
                 else:
                     palabraAleatoria = random.choice(list(diccionario.keys()))
                     listaPalabras[posicion] = palabraAleatoria
+
+
+
+def completarArchivoSalida(diccionario, archivoFrases, archivoSalida):
+
+    for linea in archivoFrases.readlines():
+
+        listaPalabras = linea.split()
+        largo = len(listaPalabras)
+
+        filtrarLista(listaPalabras,largo,diccionario)
 
         archivoSalida.write(' '.join(listaPalabras) + '\n')
 
