@@ -93,6 +93,16 @@ void procesarArchivos(char *nombreArtista){
 
 }
 
+void ejecutarPython(char *nombreArtista){
+
+    char comando[100];
+    
+    sprintf(comando, "python3 main.py %s", nombreArtista);
+
+    system(comando);
+}
+
+
 int main(int argc, char *argv[]) {
 
     if (argc < 2) {
@@ -109,11 +119,7 @@ int main(int argc, char *argv[]) {
 
     procesarArchivos(argv[1]);
 
-    char comando[100];
-    
-    sprintf(comando, "python3 main.py %s", argv[1]);
-
-    system(comando);
+    ejecutarPython(argv[1]);
 
     return 0;  
 }
