@@ -55,10 +55,6 @@ void procesarTextosDelArtista(char *nombreTexto,char *nombreArtista, FILE *archi
                 fputc(caracter, archivosalida);
             }
         }
-
-        if (caracter == '\n' && caracterPrevio != '.') {
-            fputc(' ', archivosalida);
-        }
         
         if (caracter == '.') {
             fputc('\n', archivosalida);
