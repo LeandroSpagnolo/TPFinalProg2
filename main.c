@@ -3,6 +3,8 @@
 #include <string.h>
 #include <ctype.h>
 
+#define MAX_LONG_COMANDO 300
+
 int existeCarpetaArtista(char *nombreArtista){
 
     system("cd Textos/ && ls > ../nombresArtistas.txt");
@@ -27,7 +29,7 @@ int existeCarpetaArtista(char *nombreArtista){
 
 void encontrarNombreTextos(char *nombreArtista){
 
-    char comando[200]; 
+    char comando[MAX_LONG_COMANDO]; 
     
     sprintf(comando, "cd Textos/%s && ls > ../../nombresTextos.txt", nombreArtista);
 
@@ -95,7 +97,7 @@ void procesarArchivos(char *nombreArtista){
 
 void ejecutarPython(char *nombreArtista){
 
-    char comando[100];
+    char comando[MAX_LONG_COMANDO];
     
     sprintf(comando, "python3 main.py %s", nombreArtista);
 
