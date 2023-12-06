@@ -39,10 +39,8 @@ void encontrarNombreTextos(char *nombreArtista){
 
 void procesarTextosDelArtista(char *nombreTexto,char *nombreArtista, FILE *archivosalida){
 
-    char ubicacionTextos[100] = "./Textos/";
-    strcat(ubicacionTextos,nombreArtista);
-    strcat(ubicacionTextos,"/");
-    strcat(ubicacionTextos,nombreTexto);
+    char ubicacionTextos[100];
+    sprintf(ubicacionTextos, "./Textos/%s/%s", nombreArtista, nombreTexto);
 
     FILE *archivoTexto = fopen(ubicacionTextos,"r");
    
@@ -77,9 +75,8 @@ void procesarArchivos(char *nombreArtista){
 
     FILE *archivoNombresTextos = fopen("./nombresTextos.txt","r");
 
-    char ubicacionEntradasArtista[100] = "./Entradas/";
-    strcat(ubicacionEntradasArtista,nombreArtista);
-    strcat(ubicacionEntradasArtista,".txt");
+    char ubicacionEntradasArtista[100];
+    sprintf(ubicacionEntradasArtista, "./Entradas/%s.txt", nombreArtista);
     
     FILE *archivoEntradasArtista = fopen(ubicacionEntradasArtista,"w");
 
