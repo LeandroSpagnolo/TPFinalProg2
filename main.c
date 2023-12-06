@@ -39,7 +39,7 @@ void encontrarNombreTextos(char *nombreArtista){
 
 void procesarTextosDelArtista(char *nombreTexto,char *nombreArtista, FILE *archivosalida){
 
-    char ubicacionTextos[100];
+    char ubicacionTextos[MAX_LONG_COMANDO];
     sprintf(ubicacionTextos, "./Textos/%s/%s", nombreArtista, nombreTexto);
 
     FILE *archivoTexto = fopen(ubicacionTextos,"r");
@@ -71,13 +71,12 @@ void procesarArchivos(char *nombreArtista){
 
     FILE *archivoNombresTextos = fopen("./nombresTextos.txt","r");
 
-    char ubicacionEntradasArtista[100];
+    char ubicacionEntradasArtista[MAX_LONG_COMANDO];
     sprintf(ubicacionEntradasArtista, "./Entradas/%s.txt", nombreArtista);
     
     FILE *archivoEntradasArtista = fopen(ubicacionEntradasArtista,"w");
 
     char linea[100];
-    
 
     while (fscanf(archivoNombresTextos, "%s", linea) == 1) {
        procesarTextosDelArtista(linea,nombreArtista,archivoEntradasArtista);
