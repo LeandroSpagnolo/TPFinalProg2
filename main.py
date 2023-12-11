@@ -55,20 +55,24 @@ def adivinarPalabra(diccionarioPalabra):
 def filtrarLista(listaPalabras,largo,diccionario):
 
     for posicion in range(largo):
+            
+            Encontro = False
 
             if '_' in listaPalabras[posicion]:
 
                 if posicion > 0 and listaPalabras[posicion - 1] in diccionario:
-
                     palabraAnterior = listaPalabras[posicion - 1]
-                    listaPalabras[posicion] = adivinarPalabra(diccionario[palabraAnterior]["siguiente"])
+                    if diccionario[palabraAnterior]["siguiente"] != {}:
+                        listaPalabras[posicion] = adivinarPalabra(diccionario[palabraAnterior]["siguiente"])
+                        Encontro = True
 
                 elif posicion + 1 < largo and listaPalabras[posicion + 1] in diccionario:
-
                     palabraSiguiente = listaPalabras[posicion + 1]
-                    listaPalabras[posicion] = adivinarPalabra(diccionario[palabraSiguiente]["anterior"])
-                    
-                else:
+                    if diccionario[palabraSiguiente]["anterior"] != {}:
+                        listaPalabras[posicion] = adivinarPalabra(diccionario[palabraSiguiente]["anterior"])
+                        Encontro = True
+
+                if not Encontro:
                     palabraAleatoria = random.choice(list(diccionario.keys()))
                     listaPalabras[posicion] = palabraAleatoria
 
