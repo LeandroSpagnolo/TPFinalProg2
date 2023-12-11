@@ -50,7 +50,7 @@ void procesarTextosDelArtista(char *nombreTexto,char *nombreArtista, FILE *archi
     while ((caracter = fgetc(archivoTexto)) != EOF) {
         caracter = tolower(caracter);
 
-        if (isalnum(caracter) || caracter == ' ') {
+        if (isalpha(caracter) || caracter == ' ') {
             if (!(caracter == ' ' && caracterPrevio == ' ')) {
                 fputc(caracter, archivosalida);
             }
