@@ -5,6 +5,8 @@
 
 #define MAX_LONG_COMANDO 300
 
+
+
 int existeCarpetaArtista(char *nombreArtista){
 
     system("cd Textos/ && ls > ../nombresArtistas.txt");
@@ -105,12 +107,12 @@ int main(int argc, char *argv[]) {
 
     if (argc < 2) {
         printf("No se ha ingresado ningun argumento\n");
-        return 1;  
+        exit(1);  
     }
 
     if(existeCarpetaArtista(argv[1]) == 0){
         printf("No se encontro al artista en la carpeta\n");
-        return 2;
+        exit(1);
     }
     
     encontrarNombreTextos(argv[1]);
