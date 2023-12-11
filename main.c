@@ -51,12 +51,12 @@ void procesarTextosDelArtista(char *nombreTexto,char *nombreArtista, FILE *archi
         caracter = tolower(caracter);
 
         if (isalpha(caracter) || caracter == ' ') {
-            if (!(caracter == ' ' && caracterPrevio == ' ')) {
+            if (!(caracter == ' ' && caracterPrevio == ' ') && caracterPrevio != '.') {
                 fputc(caracter, archivosalida);
             }
         }
         
-        if (caracter == '\n' && caracterPrevio != '.') {
+        if(caracter == '\n' && isalpha(caracterPrevio)){
             fputc(' ', archivosalida);
         }
         
