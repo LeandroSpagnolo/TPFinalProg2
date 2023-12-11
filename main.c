@@ -2,10 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <assert.h>
 
 #define MAX_LONG_COMANDO 300
-
-
 
 int existeCarpetaArtista(char *nombreArtista){
 
@@ -39,38 +38,40 @@ void encontrarNombreTextos(char *nombreArtista){
 
 }
 
-void procesarTextosDelArtista(char *nombreTexto,char *nombreArtista, FILE *archivosalida){
+void procesarCaracter(FILE *archivosalida, char caracter, char *caracterPrevio) {
+    caracter = tolower(caracter);
 
+    if (isalpha(caracter) || caracter == ' ') {
+        if (!(caracter == ' ' && *caracterPrevio == ' ') && *caracterPrevio != '.') {
+            fputc(caracter, archivosalida);
+        }
+    }
+
+    if (caracter == '\n' && isalpha(*caracterPrevio)) {
+        fputc(' ', archivosalida);
+    }
+
+    if (caracter == '.') {
+        fputc('\n', archivosalida);
+    }
+
+    *caracterPrevio = caracter;
+}
+
+void procesarTextosDelArtista(char *nombreTexto, char *nombreArtista, FILE *archivosalida) {
     char ubicacionTextos[MAX_LONG_COMANDO];
     sprintf(ubicacionTextos, "./Textos/%s/%s", nombreArtista, nombreTexto);
 
-    FILE *archivoTexto = fopen(ubicacionTextos,"r");
-   
-    int caracter;
-    int caracterPrevio = ' ';
+    FILE *archivoTexto = fopen(ubicacionTextos, "r");
+
+    char caracter;
+    char caracterPrevio = ' ';
 
     while ((caracter = fgetc(archivoTexto)) != EOF) {
-        caracter = tolower(caracter);
-
-        if (isalpha(caracter) || caracter == ' ') {
-            if (!(caracter == ' ' && caracterPrevio == ' ') && caracterPrevio != '.') {
-                fputc(caracter, archivosalida);
-            }
-        }
-        
-        if(caracter == '\n' && isalpha(caracterPrevio)){
-            fputc(' ', archivosalida);
-        }
-        
-        if (caracter == '.') {
-            fputc('\n', archivosalida);
-        }
-
-        caracterPrevio = caracter;
+        procesarCaracter(archivosalida, caracter, &caracterPrevio);
     }
-   
-    fclose(archivoTexto);
 
+    fclose(archivoTexto);
 }
 
 void procesarArchivos(char *nombreArtista){
@@ -102,12 +103,56 @@ void ejecutarPython(char *nombreArtista){
     system(comando);
 }
 
+void testExisteCarpetaArtista() {
+    assert(existeCarpetaArtista("Fito_Paez") == 1);
+    assert(existeCarpetaArtista("NombreArtistaNoExistente") == 0);
+}
+
+void testProcesarCaracter(){
+
+    FILE *archivosalida = fopen("salida.txt", "w+");
+
+    char caracterPrevio = ' ';
+
+    procesarCaracter(archivosalida, 'A', &caracterPrevio);
+    procesarCaracter(archivosalida, 'B', &caracterPrevio);
+    procesarCaracter(archivosalida, ' ', &caracterPrevio);
+    procesarCaracter(archivosalida, 'C', &caracterPrevio);
+    
+    fseek(archivosalida, 0, SEEK_SET);
+    
+    assert(fgetc(archivosalida) == 'a');
+    assert(fgetc(archivosalida) == 'b');
+    assert(fgetc(archivosalida) == ' ');
+    assert(fgetc(archivosalida) == 'c');
+
+    fclose(archivosalida);
+
+    remove("salida.txt");
+
+
+}
+
+void manejarTest(){
+
+    testExisteCarpetaArtista();
+
+    testProcesarCaracter();
+
+}
 
 int main(int argc, char *argv[]) {
 
     if (argc < 2) {
         printf("No se ha ingresado ningun argumento\n");
         exit(1);  
+    }
+
+    if(strcmp(argv[1],"test") == 0){
+
+        manejarTest();
+        return 0;
+
     }
 
     if(existeCarpetaArtista(argv[1]) == 0){
