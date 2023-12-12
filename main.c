@@ -149,10 +149,8 @@ int main(int argc, char *argv[]) {
     }
 
     if(strcmp(argv[1],"test") == 0){
-
         manejarTest();
         return 0;
-
     }
 
     if(existeCarpetaArtista(argv[1]) == 0){
