@@ -193,12 +193,12 @@ int main(int argc, char *argv[]) {
         return 0;
     }
 
+    verificarExistenciaCarpetas();
+
     if(existeCarpetaArtista(argv[1]) == 0){
         printf("No se encontro al artista en la carpeta\n");
         exit(1);
     }
-
-    verificarExistenciaCarpetas();
 
     encontrarNombreTextos(argv[1]);
 
