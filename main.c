@@ -139,6 +139,8 @@ void manejarTest(){
 
     testProcesarCaracter();
 
+    printf("Los Test se han ejecutado correctamente\n");
+
 }
 
 int main(int argc, char *argv[]) {
