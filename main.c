@@ -6,8 +6,10 @@
 
 #define MAX_LONG_COMANDO 300
 
+// Función para verificar si existe una carpeta para un artista dado
 int existeCarpetaArtista(char *nombreArtista){
 
+    // Ejecuta el comando para listar archivos en la carpeta Textos y guarda los nombres en el archivo nombresArtistas.txt
     system("cd Textos/ && ls > ../nombresArtistas.txt");
 
     FILE *archivoNombreArtistas = fopen("./nombresArtistas.txt","r");
@@ -16,30 +18,34 @@ int existeCarpetaArtista(char *nombreArtista){
 
     int encontroArtista = 0;
 
-    while (fscanf(archivoNombreArtistas, "%s", linea) == 1&& encontroArtista == 0) {
-        if(strcmp(linea,nombreArtista) == 0){
-            encontroArtista = 1;
+    // Lee cada línea del archivo de nombres de artistas
+    while (fscanf(archivoNombreArtistas, "%s", linea) == 1 && encontroArtista == 0) {
+        // Compara el nombre del artista con la línea actual
+        if(strcmp(linea, nombreArtista) == 0){
+            encontroArtista = 1; 
         }
     }
 
-    fclose(archivoNombreArtistas);
+    fclose(archivoNombreArtistas); 
 
-    return encontroArtista;
-
+    return encontroArtista; // Devuelve 1 si se encontró al artista, 0 si no
 }
 
+// Función para obtener los nombres de los textos de un artista y guardarlos en un archivo
 void encontrarNombreTextos(char *nombreArtista){
 
     char comando[MAX_LONG_COMANDO]; 
     
+    // Construye el comando para cambiar al directorio de Textos del artista y listar archivos
     sprintf(comando, "cd Textos/%s && ls > ../../nombresTextos.txt", nombreArtista);
 
+    // Ejecuta el comando
     system(comando);
-
 }
 
+// Función para procesar un solo carácter en un archivo de salida
 void procesarCaracter(FILE *archivosalida, char caracter, char *caracterPrevio) {
-    caracter = tolower(caracter);
+    caracter = tolower(caracter); // Convierte el carácter a minúscula
 
     if (isalpha(caracter) || caracter == ' ') {
         if (!(caracter == ' ' && *caracterPrevio == ' ') && *caracterPrevio != '.') {
@@ -51,13 +57,15 @@ void procesarCaracter(FILE *archivosalida, char caracter, char *caracterPrevio) 
         fputc(' ', archivosalida);
     }
 
+    // Si es un punto, se agrega un salto de línea para dividir las oraciones
     if (caracter == '.') {
         fputc('\n', archivosalida);
     }
 
-    *caracterPrevio = caracter;
+    *caracterPrevio = caracter; 
 }
 
+// Función para procesar los textos de un artista y escribir el resultado en un archivo de salida
 void procesarTextosDelArtista(char *nombreTexto, char *nombreArtista, FILE *archivosalida) {
     char ubicacionTextos[MAX_LONG_COMANDO];
     sprintf(ubicacionTextos, "./Textos/%s/%s", nombreArtista, nombreTexto);
@@ -67,13 +75,15 @@ void procesarTextosDelArtista(char *nombreTexto, char *nombreArtista, FILE *arch
     char caracter;
     char caracterPrevio = ' ';
 
+    // Lee cada carácter del archivo de texto y lo procesa
     while ((caracter = fgetc(archivoTexto)) != EOF) {
         procesarCaracter(archivosalida, caracter, &caracterPrevio);
     }
 
-    fclose(archivoTexto);
+    fclose(archivoTexto); 
 }
 
+// Función para procesar todos los archivos de texto de un artista y escribir el resultado en un archivo de salida
 void procesarArchivos(char *nombreArtista){
 
     FILE *archivoNombresTextos = fopen("./nombresTextos.txt","r");
@@ -85,15 +95,16 @@ void procesarArchivos(char *nombreArtista){
 
     char linea[100];
 
+    // Lee cada nombre de texto y procesa los archivos correspondientes
     while (fscanf(archivoNombresTextos, "%s", linea) == 1) {
-       procesarTextosDelArtista(linea,nombreArtista,archivoEntradasArtista);
+       procesarTextosDelArtista(linea, nombreArtista, archivoEntradasArtista);
     }
 
-    fclose(archivoNombresTextos);
-    fclose(archivoEntradasArtista);
-
+    fclose(archivoNombresTextos); 
+    fclose(archivoEntradasArtista); 
 }
 
+// Función para ejecutar un script de Python con el nombre del artista como argumento
 void ejecutarPython(char *nombreArtista){
 
     char comando[MAX_LONG_COMANDO];
@@ -118,9 +129,9 @@ void testProcesarCaracter(){
     procesarCaracter(archivosalida, 'B', &caracterPrevio);
     procesarCaracter(archivosalida, ' ', &caracterPrevio);
     procesarCaracter(archivosalida, 'C', &caracterPrevio);
-    
+
     fseek(archivosalida, 0, SEEK_SET);
-    
+
     assert(fgetc(archivosalida) == 'a');
     assert(fgetc(archivosalida) == 'b');
     assert(fgetc(archivosalida) == ' ');
@@ -130,9 +141,9 @@ void testProcesarCaracter(){
 
     remove("salida.txt");
 
-
 }
 
+// Funciones para manejar los test
 void manejarTest(){
 
     testExisteCarpetaArtista();
@@ -140,6 +151,33 @@ void manejarTest(){
     testProcesarCaracter();
 
     printf("Los Test se han ejecutado correctamente\n");
+}
+
+void verificarExistenciaCarpetas(){
+
+    if (system("test -d Textos") != 0) {
+        printf("No se encontro la carpeta Textos\n");
+        exit(1);
+    }
+
+    if (system("test -d Frases") != 0) {
+        printf("No se encontro la carpeta Frases\n");
+        exit(1);
+    }
+
+    if (system("test -d Salidas") != 0) {
+        if (system("mkdir Salidas") != 0) {
+            perror("Error al crear la carpeta Salidas");
+            exit(1);
+        }
+    } 
+    
+    if (system("test -d Entradas") != 0) {
+        if (system("mkdir Entradas") != 0) {
+            perror("Error al crear la carpeta Entradas");
+            exit(1);
+        }
+    }
 
 }
 
@@ -160,20 +198,7 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
 
-    
-    if (system("test -d Entradas") != 0) {
-        if (system("mkdir Entradas") != 0) {
-            perror("Error al crear la carpeta Entradas");
-            exit(1);
-        }
-    }
-
-    if (system("test -d Salidas") != 0) {
-        if (system("mkdir Salidas") != 0) {
-            perror("Error al crear la carpeta Salidas");
-            exit(1);
-        }
-    }
+    verificarExistenciaCarpetas();
 
     encontrarNombreTextos(argv[1]);
 
