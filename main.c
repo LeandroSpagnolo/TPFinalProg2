@@ -159,7 +159,22 @@ int main(int argc, char *argv[]) {
         printf("No se encontro al artista en la carpeta\n");
         exit(1);
     }
+
     
+    if (system("test -d Entradas") != 0) {
+        if (system("mkdir Entradas") != 0) {
+            perror("Error al crear la carpeta Entradas");
+            exit(1);
+        }
+    }
+
+    if (system("test -d Salidas") != 0) {
+        if (system("mkdir Salidas") != 0) {
+            perror("Error al crear la carpeta Salidas");
+            exit(1);
+        }
+    }
+
     encontrarNombreTextos(argv[1]);
 
     procesarArchivos(argv[1]);
